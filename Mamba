@@ -1,2 +1,54 @@
  I was responsible for configuring data pipelines from Kafka to ClickHouse using Kafka Engine. 
 So i write a universal script for exporting data.
+-------------------------------------------------------
+CREATE TABLE tablename
+(
+    nameinKafka                Int64,
+    nameinKafka    Int64,
+    nameinKafka      Int64,
+    nameinKafka        Int64,
+    nameinKafka              Nullable(String),
+    nameinKafka Nullable(String),
+    nameinKafka            LowCardinality(Nullable(String)),
+    nameinKafka           DateTime64(3)
+)
+ENGINE = Kafka(
+    '',                -- adress
+    '',        -- topic name
+    '',   -- consumer‑group 
+    ''                     -- format
+)
+SETTINGS
+    kafka_thread_per_consumer = 0,
+    kafka_num_consumers       = 5,
+    kafka_poll_timeout_ms     = 5000;
+--------------------------------------------------------
+CREATE TABLE tablename1
+(
+    nameinKafka                Int64,
+    nameinKafka    Int64,
+    nameinKafka      Int64,
+    nameinKafka        Int64,
+    nameinKafka              String DEFAULT '',          
+    nameinKafka Nullable(String),
+    nameinKafka           String,
+    nameinKafka              Int64,
+    nameinKafka            LowCardinality(Nullable(String)),
+    nameinKafka           DateTime64(3)
+)
+ENGINE = ReplacingMergeTree(created) – type
+ORDER BY nameinKafka; –duplets drop (if needed)
+----------------------------------------------------------
+CREATE MATERIALIZED VIEW mvname
+TO tablename1
+AS
+SELECT *
+FROM tablename;
+----------------------------------------------------------
+SELECT name, engine
+FROM system.tables
+WHERE database = '.'
+  AND name IN ('tablename1','tablename','mvname');
+-- is it working or not 
+---------------------------------------------------------
+SELECT count() FROM tablename;
