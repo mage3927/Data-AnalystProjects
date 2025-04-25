@@ -1,0 +1,2 @@
+ I was responsible for configuring data pipelines from Kafka to ClickHouse using Kafka Engine. 
+So i write a universal script for exporting data.
